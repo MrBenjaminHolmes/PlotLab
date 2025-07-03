@@ -1,107 +1,59 @@
 import "./styles.css";
+import { resizeCanvas, setScale } from "./drawGraph.js";
 
 const canvas = document.getElementById("GraphArea");
 const ctx = canvas.getContext("2d");
-const width = canvas.width;
-const height = canvas.height;
+const newExpress = document.querySelector("#newExpressionButton");
+const sidebar = document.getElementById("sidebar");
 
-let scale = 1.0; // Change this to zoom in/out
-const BASE_MAJOR_SPACING = 50;
-const BASE_MINOR_SPACING = 10;
-function drawGrid() {
-  const majorSpacing = BASE_MAJOR_SPACING * scale;
-  const minorSpacing = BASE_MINOR_SPACING * scale;
-  ctx.clearRect(0, 0, width, height);
-  //Major Lines
-  ctx.strokeStyle = "#c0c0c0";
-  ctx.lineWidth = 1;
+let scale = 1.0;
 
-  for (let x = width / 2; x <= width; x += majorSpacing) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, height);
-    ctx.stroke();
-  }
-  for (let x = width / 2; x >= 0; x -= majorSpacing) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, height);
-    ctx.stroke();
-  }
-  for (let y = height / 2; y <= width; y += majorSpacing) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(width, y);
-    ctx.stroke();
-  }
-  for (let y = height / 2; y >= 0; y -= majorSpacing) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(width, y);
-    ctx.stroke();
-  }
-
-  //Minor Lines
-  ctx.strokeStyle = "#e0e0e0";
-  ctx.lineWidth = 0.5;
-
-  for (let x = width / 2; x <= width; x += minorSpacing) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, height);
-    ctx.stroke();
-  }
-  for (let x = width / 2; x >= 0; x -= minorSpacing) {
-    ctx.beginPath();
-    ctx.moveTo(x, 0);
-    ctx.lineTo(x, height);
-    ctx.stroke();
-  }
-  for (let y = height / 2; y <= width; y += minorSpacing) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(width, y);
-    ctx.stroke();
-  }
-  for (let y = height / 2; y >= 0; y -= minorSpacing) {
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(width, y);
-    ctx.stroke();
-  }
+function updateScale(newScale) {
+  scale = newScale;
+  setScale(scale);
 }
-function drawAxis() {
-  ctx.strokeStyle = "#a0a0a0";
-  ctx.lineWidth = 1.5;
-  ctx.beginPath();
-  ctx.moveTo(0, height / 2);
-  ctx.lineTo(width, height / 2);
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(width / 2, 0);
-  ctx.lineTo(width / 2, height);
-  ctx.stroke();
-}
-drawGrid();
-drawAxis();
 
 canvas.addEventListener("wheel", (event) => {
   event.preventDefault();
-  if (event.deltaY < 0) {
-    scale += 0.1;
-  }
-  if (event.deltaY > 0) {
-    scale = Math.max(0.1, scale - 0.1);
-  }
-
-  drawGrid();
-  drawAxis();
+  if (event.deltaY < 0) updateScale(scale + 0.1);
+  if (event.deltaY > 0) updateScale(Math.max(0.1, scale - 0.1));
+  resizeCanvas(canvas, ctx);
 });
 
 canvas.addEventListener("auxclick", (event) => {
-  if (event.button == 1) {
-    scale = 1;
-    drawGrid();
-    drawAxis();
+  if (event.button === 1) {
+    updateScale(1.0);
+    resizeCanvas(canvas, ctx);
   }
 });
+
+window.addEventListener("resize", () => resizeCanvas(canvas, ctx));
+window.addEventListener("load", () => resizeCanvas(canvas, ctx));
+
+newExpress.addEventListener("click", () => {
+  const div = document.createElement("div");
+  const expressionCount =
+    sidebar.querySelectorAll(".expressionInput").length + 1;
+
+  div.className = "expressionInput";
+  div.innerHTML = `
+    <div id="removeButton${expressionCount}" class="remove">x</div>
+    <input type="search" name="expression${expressionCount}" />
+    <div id="colourSelect${expressionCount}" class="colourSelect"></div>
+  `;
+
+  const lastChild = sidebar.lastElementChild;
+
+  if (lastChild) {
+    sidebar.insertBefore(div, lastChild);
+  }
+
+  const removeButton = div.querySelector(".remove");
+  removeButton.addEventListener("click", () => {
+    div.remove();
+  });
+});
+
+if (module.hot) {
+  module.hot.accept();
+}

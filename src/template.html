@@ -7,9 +7,25 @@
     <title>PlotLab</title>
   </head>
   <body>
+    <header>
+      <div id="Logo">
+        <img id="logo" src="../images/logo.png" alt="logoimage" />
+      </div>
+      <div id="Title"><h1>PlotLab</h1></div>
+    </header>
+
     <div id="mainBody">
-      <canvas id="GraphArea" width="1400" height="910"></canvas>
-      <div></div>
+      <canvas id="GraphArea"></canvas>
+      <div id="sidebar">
+        <div class="expressionInput">
+          <div class="remove">x</div>
+          <input type="search" name="expression" />
+          <div class="colourSelect"></div>
+        </div>
+        <div id="newExpression">
+          <button id="newExpressionButton">+</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>

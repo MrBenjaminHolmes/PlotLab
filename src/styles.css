@@ -2,9 +2,150 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   background-color: rgb(247, 247, 247);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  height: 8vh;
+  padding: 0 20px;
+  background-color: #2b2b2b;
+  color: white;
+}
+
+#logo {
+  height: 6vh;
+  width: auto;
+  margin-right: 15px;
 }
 
 #mainBody {
   display: flex;
+  height: 92vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+#GraphArea {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: block;
+  background-color: white;
+}
+
+#sidebar {
+  width: 300px;
+  min-width: 200px;
+  max-width: 400px;
+  background-color: #f0f0f0;
+  border-left: 1px solid #ccc;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.expressionInput {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #dcdcdc;
+  padding: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+.expressionInput input[type="search"] {
+  flex: 1;
+  padding: 0.4rem 0.6rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #f0f0f0;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.expressionInput input[type="search"]:focus {
+  background-color: #f0f0f0;
+}
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
+}
+
+.remove {
+  cursor: pointer;
+  font-weight: bold;
+  color: #cc3d3d;
+  font-size: 1rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.remove:hover {
+  background-color: #ffdada;
+}
+
+.colourSelect {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #4a90e2;
+  border: 1px solid #bbb;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.colourSelect:hover {
+  transform: scale(1.1);
+}
+#newExpression {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 100%;
+}
+
+#newExpression > button {
+  background-color: #444;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+
+  color: #eee;
+  font-size: 1.2rem;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease,
+    transform 0.2s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#newExpression > button:hover {
+  background-color: #666;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: scale(1.1);
+}
+
+#newExpression > button:active {
+  background-color: #333;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  transform: scale(0.95);
 }
