@@ -13,7 +13,6 @@ const sidebar = document.getElementById("sidebar");
 // Core values
 let scale = 1.0;
 
-// Redraw everything
 function update() {
   let i = 1;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -93,3 +92,7 @@ newExpressButton.addEventListener("click", () => {
 
 // Initial setup
 newExpressionInput(sidebar, update, getAllExpressions);
+
+addEventListener("resize", (event) => {
+  update();
+});

@@ -1,5 +1,10 @@
 // ui.js
+import katex from "katex";
+import "katex/dist/katex.min.css";
 
+function renderMath(element, input) {
+  katex.render(input, element, { throwOnError: false });
+}
 export function newExpressionInput(sidebar, update, getAllExpressions) {
   const div = document.createElement("div");
   const expressionCount =
@@ -7,13 +12,17 @@ export function newExpressionInput(sidebar, update, getAllExpressions) {
 
   div.className = "expressionInput";
   div.innerHTML = `
-    <div id="removeButton${expressionCount}" class="remove">x</div>
-    <input type="search" name="expression${expressionCount}" />
-    <input  id="colourSelect${expressionCount}" class="colourSelect" type="color" id="head" name="head" value="${
+  <div id="removeButton${expressionCount}" class="remove">x</div>
+
+  <div class="input-wrapper" >
+    <input class="inputExpression" type="search" name="expression${expressionCount}"/>
+    <div class="math-overlay"></div>
+  </div>
+
+  <input id="colourSelect${expressionCount}" class="colourSelect" type="color" name="head" value="${
     "#" + (((1 << 24) * Math.random()) | 0).toString(16).padStart(6, "0")
   }" />
-
-  `;
+`;
 
   const lastChild = sidebar.lastElementChild;
   if (lastChild) {
@@ -30,8 +39,13 @@ export function newExpressionInput(sidebar, update, getAllExpressions) {
   });
 
   // Input listener
-  const inputField = div.querySelector("input");
+  const inputWrapper = div.querySelector(".input-wrapper");
+  const inputField = inputWrapper.querySelector("input[type='search']");
+  const mathOverlay = inputWrapper.querySelector(".math-overlay");
+
   inputField.addEventListener("input", () => {
+    const latex = inputField.value.replace(/\^(\w+)/g, "^{$1}");
+    renderMath(mathOverlay, latex);
     update();
   });
   const colourInput = div.querySelector("input[type='color']");
