@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -6,8 +7,8 @@
 
 html,
 body {
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Racing Sans One", "Lucida Sans", "Lucida Sans Regular",
+    "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   width: 100%;
   height: 100%;
   display: flex;
@@ -97,20 +98,47 @@ input[type="search"]::-webkit-search-cancel-button {
 .remove:hover {
   background-color: #ffdada;
 }
-
+input[type="color"] {
+  appearance: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  border-radius: 100%;
+  cursor: pointer;
+  width: 3vb;
+  height: 3vh;
+}
 .colourSelect {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background-color: #4a90e2;
-  border: 1px solid #bbb;
   cursor: pointer;
   flex-shrink: 0;
+  border-radius: 50%;
   transition: transform 0.2s ease;
 }
 
 .colourSelect:hover {
   transform: scale(1.1);
+}
+
+input[type="color"] {
+  border-radius: 50%;
+  cursor: pointer;
+  width: 3vb;
+
+  height: 3vh;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  overflow: hidden;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border: 1px solid #bbb;
+  border-radius: 50%;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
 }
 #newExpression {
   display: flex;

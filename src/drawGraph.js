@@ -20,6 +20,7 @@ export function resizeCanvas(canvas, ctx) {
 
   drawGrid(canvas, ctx);
   drawAxis(canvas, ctx);
+  drawLabels(canvas, ctx);
 }
 
 function drawGrid(canvas, ctx) {
@@ -62,6 +63,45 @@ function drawAxis(canvas, ctx) {
   ctx.lineWidth = 1.5;
   drawLine(ctx, 0, height / 2, width, height / 2);
   drawLine(ctx, width / 2, 0, width / 2, height);
+}
+
+function drawLabels(canvas, ctx) {
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+
+  const centerX = width / 2;
+  const centerY = height / 2;
+  const majorSpacing = BASE_MAJOR_SPACING * scale;
+
+  ctx.fillStyle = "#000";
+  ctx.font = "12px Arial";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "top";
+  const minSpacingForLabels = 40; // Minimum px between labels
+  const labelStep = Math.ceil(minSpacingForLabels / majorSpacing);
+
+  // X-axis Labels
+  for (let x = centerX, i = 0; x <= width; x += majorSpacing, i++) {
+    if (i !== 0 && i % labelStep === 0) {
+      ctx.fillText(`${i}`, x, centerY + 4);
+    }
+  }
+  for (let x = centerX - majorSpacing, i = -1; x >= 0; x -= majorSpacing, i--) {
+    if (i !== 0 && i % labelStep === 0) {
+      ctx.fillText(`${i}`, x, centerY + 4);
+    }
+  }
+  //Y axis Labels
+  for (let y = centerY, i = 0; y <= height; y += majorSpacing, i--) {
+    if (i !== 0 && i % labelStep === 0) {
+      ctx.fillText(`${i}`, centerX - 8, y);
+    }
+  }
+  for (let y = centerY - majorSpacing, i = 1; y >= 0; y -= majorSpacing, i++) {
+    if (i !== 0 && i % labelStep === 0) {
+      ctx.fillText(`${i}`, centerX - 8, y);
+    }
+  }
 }
 
 function drawLine(ctx, x1, y1, x2, y2) {

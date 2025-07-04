@@ -1,4 +1,5 @@
 // ui.js
+
 export function newExpressionInput(sidebar, update, getAllExpressions) {
   const div = document.createElement("div");
   const expressionCount =
@@ -8,7 +9,10 @@ export function newExpressionInput(sidebar, update, getAllExpressions) {
   div.innerHTML = `
     <div id="removeButton${expressionCount}" class="remove">x</div>
     <input type="search" name="expression${expressionCount}" />
-    <div id="colourSelect${expressionCount}" class="colourSelect"></div>
+    <input  id="colourSelect${expressionCount}" class="colourSelect" type="color" id="head" name="head" value="${
+    "#" + (((1 << 24) * Math.random()) | 0).toString(16).padStart(6, "0")
+  }" />
+
   `;
 
   const lastChild = sidebar.lastElementChild;
@@ -29,6 +33,9 @@ export function newExpressionInput(sidebar, update, getAllExpressions) {
   const inputField = div.querySelector("input");
   inputField.addEventListener("input", () => {
     update();
-    console.log(getAllExpressions());
+  });
+  const colourInput = div.querySelector("input[type='color']");
+  colourInput.addEventListener("input", () => {
+    update();
   });
 }

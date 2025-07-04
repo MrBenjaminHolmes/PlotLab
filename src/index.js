@@ -15,31 +15,36 @@ let scale = 1.0;
 
 // Redraw everything
 function update() {
+  let i = 1;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   resizeCanvas(canvas, ctx);
   getAllExpressions().forEach((expr) => {
-    evaluateExpression(expr);
+    evaluateExpression(expr, i);
+    i++;
   });
 }
 
 // Extract expressions
 function getAllExpressions() {
-  const inputs = sidebar.querySelectorAll(".expressionInput input");
+  const inputs = sidebar.querySelectorAll(
+    ".expressionInput input[type='search']"
+  );
   return Array.from(inputs)
     .map((input) => input.value.trim())
     .filter((val) => val !== "");
 }
 
 // Plot expression
-function evaluateExpression(expr) {
+function evaluateExpression(expr, i) {
   try {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
     const centerX = width / 2;
     const centerY = height / 2;
-
+    const colourSelects = document.querySelectorAll(".colourSelect");
+    const colour = colourSelects[i - 1].value;
     ctx.beginPath();
-    ctx.strokeStyle = "#a0a0a0";
+    ctx.strokeStyle = colour;
     let first = true;
 
     for (let screenX = 0; screenX <= width; screenX += 1) {
@@ -56,7 +61,7 @@ function evaluateExpression(expr) {
     }
     ctx.stroke();
   } catch (err) {
-    console.log(`Invalid Expression: "${expr}" — ${err}`);
+    //console.log(`Invalid Expression: "${expr}" — ${err}`);
   }
 }
 
