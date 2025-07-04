@@ -10,6 +10,10 @@ const ctx = canvas.getContext("2d");
 const newExpressButton = document.getElementById("newExpressionButton");
 const sidebar = document.getElementById("sidebar");
 
+function convertLatexToMathjs(expr) {
+  return expr.replace(/\\sqrt\{([^}]+)\}/g, "sqrt($1)");
+}
+
 // Core values
 let scale = 1.0;
 
@@ -29,13 +33,14 @@ function getAllExpressions() {
     ".expressionInput input[type='search']"
   );
   return Array.from(inputs)
-    .map((input) => input.value.trim())
+    .map((input) => input.value.replace(/\\/g, "").trim())
     .filter((val) => val !== "");
 }
 
 // Plot expression
 function evaluateExpression(expr, i) {
   try {
+    const mathjsExpr = convertLatexToMathjs(expr);
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
     const centerX = width / 2;
