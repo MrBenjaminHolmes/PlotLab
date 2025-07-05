@@ -201,7 +201,7 @@ div.input-wrapper > input.inputExpression {
   position: relative !important;
   background: transparent !important;
   color: transparent !important;
-  caret-color: black !important;
+  caret-color: transparent !important;
   z-index: 2 !important;
   width: 100% !important;
   padding: 4px !important;
