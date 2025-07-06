@@ -1,6 +1,5 @@
 // index.js
 import "./styles.css";
-import { isoContours } from "marchingsquares";
 import { getOffset, newExpressionInput } from "./ui.js";
 import { resizeCanvas, updateScale, setScale, getScale } from "./drawGraph.js";
 import * as math from "mathjs";
@@ -44,64 +43,36 @@ function evaluateExpression(expr, i) {
     const scale = getScale();
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
+
     const { offsetX, offsetY } = getOffset();
     const centerX = width / 2 + offsetX;
     const centerY = height / 2 + offsetY;
-
     const colourSelects = document.querySelectorAll(".colourSelect");
     const colour = colourSelects[i - 1].value;
     const thicknessSelect = document.querySelectorAll(".thickness-slider");
     const thickness = thicknessSelect[i - 1].value;
-
+    ctx.beginPath();
     ctx.strokeStyle = colour;
     ctx.lineWidth = thickness;
+    let first = true;
+    for (let screenX = 0; screenX <= width; screenX += 1) {
+      const x = (screenX - centerX) / (scale * 50);
+      const y = math.evaluate(expr, { x });
+      const screenY = centerY - y * scale * 50;
 
-    const parts = expr.split("=");
-    if (parts.length !== 2) return;
-
-    const left = parts[0].trim();
-    const right = parts[1].trim();
-    const equation = `${left} - (${right})`;
-    const compiled = math.compile(equation);
-
-    const zoom = scale * 50;
-    const resolution = 4;
-    const gridWidth = Math.floor(width / resolution);
-    const gridHeight = Math.floor(height / resolution);
-
-    const data = [];
-    for (let j = 0; j < gridHeight; j++) {
-      const row = [];
-      for (let i = 0; i < gridWidth; i++) {
-        const x = ((i / (gridWidth - 1)) * width - centerX) / zoom;
-        const y = (centerY - (j / (gridHeight - 1)) * height) / zoom;
-
-        const val = compiled.evaluate({ x, y });
-        row.push(val);
+      if (first) {
+        ctx.moveTo(screenX, screenY);
+        first = false;
+      } else {
+        ctx.lineTo(screenX, screenY);
       }
-      data.push(row);
     }
-
-    const contours = isoContours(data, 0);
-
-    // Draw contours
-    ctx.beginPath();
-    contours.forEach((contour) => {
-      contour.forEach(([gx, gy], index) => {
-        const px = (gx / (gridWidth - 1)) * width;
-        const py = (gy / (gridHeight - 1)) * height;
-        if (index === 0) {
-          ctx.moveTo(px, py);
-        } else {
-          ctx.lineTo(px, py);
-        }
-      });
-    });
     ctx.stroke();
   } catch (err) {
     console.log(`Invalid Expression: "${expr}" — ${err}`);
   }
 }
+
 // Event listeners
 window.addEventListener("resize", () => resizeCanvas(canvas, ctx));
 window.addEventListener("load", () => resizeCanvas(canvas, ctx));
