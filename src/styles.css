@@ -213,9 +213,9 @@ div.input-wrapper:has(input.inputExpression:focus) {
   background-color: #e0eaff;
 }
 #sidebar.hidden {
-  transform: translateX(100%); /* Pushes sidebar out of view */
+  transform: translateX(100%);
   opacity: 0;
-  pointer-events: none; /* Optional: disables interaction when hidden */
+  pointer-events: none;
 }
 #sidebar {
   transition: transform 0.3s ease, opacity 0.3s ease;
@@ -223,18 +223,17 @@ div.input-wrapper:has(input.inputExpression:focus) {
   opacity: 1;
 }
 .thickness-slider {
-  width: 80px; /* smaller width */
-  height: 6px; /* slimmer height */
-  margin-left: 10px; /* spacing from input or color */
+  width: 80px;
+  height: 6px;
+  margin-left: 10px;
   cursor: pointer;
-  -webkit-appearance: none; /* remove default style */
+
   background: #ddd;
   border-radius: 3px;
   transition: background-color 0.3s ease;
   flex-shrink: 0;
 }
 
-/* Slider track */
 .thickness-slider::-webkit-slider-runnable-track {
   height: 6px;
   background: #bbb;
@@ -247,7 +246,6 @@ div.input-wrapper:has(input.inputExpression:focus) {
   border-radius: 3px;
 }
 
-/* Slider thumb */
 .thickness-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 14px;
@@ -255,7 +253,7 @@ div.input-wrapper:has(input.inputExpression:focus) {
   background: #666;
   border-radius: 50%;
   cursor: pointer;
-  margin-top: -4px; /* center thumb on track */
+  margin-top: -4px;
   transition: background-color 0.3s ease;
   box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
 }
@@ -278,7 +276,6 @@ div.input-wrapper:has(input.inputExpression:focus) {
   background: #444;
 }
 
-/* Arrange inputs horizontally in expressionInput */
 .expressionInput {
   display: flex;
   align-items: center;
@@ -289,9 +286,8 @@ div.input-wrapper:has(input.inputExpression:focus) {
   transition: background-color 0.2s ease;
 }
 
-/* Make input-wrapper flexible */
 .input-wrapper {
-  flex: 1 1 auto; /* grow to fill space */
+  flex: 1 1 auto;
   min-width: 0;
 }
 
