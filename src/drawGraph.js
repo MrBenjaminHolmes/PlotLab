@@ -1,9 +1,15 @@
+import { getOffset } from "./ui.js";
+
 let scale = 1.0;
 const BASE_MAJOR_SPACING = 50;
 const BASE_MINOR_SPACING = 10;
 
 export function setScale(newScale) {
   scale = newScale;
+}
+
+export function getScale() {
+  return scale;
 }
 
 export function resizeCanvas(canvas, ctx) {
@@ -24,8 +30,11 @@ export function resizeCanvas(canvas, ctx) {
 }
 
 function drawGrid(canvas, ctx) {
+  const { offsetX, offsetY } = getOffset();
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
+  const centerX = width / 2 + offsetX;
+  const centerY = height / 2 + offsetY;
 
   const majorSpacing = BASE_MAJOR_SPACING * scale;
   const minorSpacing = BASE_MINOR_SPACING * scale;
@@ -34,43 +43,47 @@ function drawGrid(canvas, ctx) {
 
   ctx.strokeStyle = "#c0c0c0";
   ctx.lineWidth = 1;
-  for (let x = width / 2; x <= width; x += majorSpacing)
+  for (let x = centerX; x <= width; x += majorSpacing)
     drawLine(ctx, x, 0, x, height);
-  for (let x = width / 2; x >= 0; x -= majorSpacing)
+  for (let x = centerX; x >= 0; x -= majorSpacing)
     drawLine(ctx, x, 0, x, height);
-  for (let y = height / 2; y <= height; y += majorSpacing)
+  for (let y = centerY; y <= height; y += majorSpacing)
     drawLine(ctx, 0, y, width, y);
-  for (let y = height / 2; y >= 0; y -= majorSpacing)
+  for (let y = centerY; y >= 0; y -= majorSpacing)
     drawLine(ctx, 0, y, width, y);
 
   ctx.strokeStyle = "#e0e0e0";
   ctx.lineWidth = 0.5;
-  for (let x = width / 2; x <= width; x += minorSpacing)
+  for (let x = centerX; x <= width; x += minorSpacing)
     drawLine(ctx, x, 0, x, height);
-  for (let x = width / 2; x >= 0; x -= minorSpacing)
+  for (let x = centerX; x >= 0; x -= minorSpacing)
     drawLine(ctx, x, 0, x, height);
-  for (let y = height / 2; y <= height; y += minorSpacing)
+  for (let y = centerY; y <= height; y += minorSpacing)
     drawLine(ctx, 0, y, width, y);
-  for (let y = height / 2; y >= 0; y -= minorSpacing)
+  for (let y = centerY; y >= 0; y -= minorSpacing)
     drawLine(ctx, 0, y, width, y);
 }
 
 function drawAxis(canvas, ctx) {
+  const { offsetX, offsetY } = getOffset();
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
+  const centerX = width / 2 + offsetX;
+  const centerY = height / 2 + offsetY;
 
   ctx.strokeStyle = "#a0a0a0";
   ctx.lineWidth = 1.5;
-  drawLine(ctx, 0, height / 2, width, height / 2);
-  drawLine(ctx, width / 2, 0, width / 2, height);
+  drawLine(ctx, 0, centerY, width, centerY);
+  drawLine(ctx, centerX, 0, centerX, height);
 }
 
 function drawLabels(canvas, ctx) {
+  const { offsetX, offsetY } = getOffset();
   const width = canvas.clientWidth;
   const height = canvas.clientHeight;
 
-  const centerX = width / 2;
-  const centerY = height / 2;
+  const centerX = width / 2 + offsetX;
+  const centerY = height / 2 + offsetY;
   const majorSpacing = BASE_MAJOR_SPACING * scale;
 
   ctx.fillStyle = "#000";

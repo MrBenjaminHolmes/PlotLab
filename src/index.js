@@ -1,6 +1,6 @@
 // index.js
 import "./styles.css";
-import { newExpressionInput } from "./ui.js";
+import { getOffset, newExpressionInput } from "./ui.js";
 import { resizeCanvas, updateScale, setScale, getScale } from "./drawGraph.js";
 import * as math from "mathjs";
 
@@ -11,13 +11,13 @@ const newExpressButton = document.getElementById("newExpressionButton");
 const sidebar = document.getElementById("sidebar");
 
 function convertLatexToMathjs(expr) {
-  return expr.replace(/\\sqrt\{([^}]+)\}/g, "sqrt($1)");
+  return expr
+    .replace(/\\sqrt\{([^}]+)\}/g, "sqrt($1)")
+    .replace(/\\le/g, "<=")
+    .replace(/\\ge/g, ">=");
 }
 
-// Core values
-let scale = 1.0;
-
-function update() {
+export function update() {
   let i = 1;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   resizeCanvas(canvas, ctx);
@@ -40,17 +40,21 @@ function getAllExpressions() {
 // Plot expression
 function evaluateExpression(expr, i) {
   try {
-    const mathjsExpr = convertLatexToMathjs(expr);
+    const scale = getScale();
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
-    const centerX = width / 2;
-    const centerY = height / 2;
+
+    const { offsetX, offsetY } = getOffset();
+    const centerX = width / 2 + offsetX;
+    const centerY = height / 2 + offsetY;
     const colourSelects = document.querySelectorAll(".colourSelect");
     const colour = colourSelects[i - 1].value;
+    const thicknessSelect = document.querySelectorAll(".thickness-slider");
+    const thickness = thicknessSelect[i - 1].value;
     ctx.beginPath();
     ctx.strokeStyle = colour;
+    ctx.lineWidth = thickness;
     let first = true;
-
     for (let screenX = 0; screenX <= width; screenX += 1) {
       const x = (screenX - centerX) / (scale * 50);
       const y = math.evaluate(expr, { x });
@@ -65,29 +69,11 @@ function evaluateExpression(expr, i) {
     }
     ctx.stroke();
   } catch (err) {
-    //console.log(`Invalid Expression: "${expr}" — ${err}`);
+    console.log(`Invalid Expression: "${expr}" — ${err}`);
   }
 }
 
 // Event listeners
-canvas.addEventListener("wheel", (event) => {
-  event.preventDefault();
-  if (event.deltaY < 0) scale += 0.1;
-  else scale = Math.max(0.1, scale - 0.1);
-  setScale(scale);
-  updateScale(scale);
-  update();
-});
-
-canvas.addEventListener("auxclick", (event) => {
-  if (event.button === 1) {
-    scale = 1.0;
-    setScale(scale);
-    updateScale(scale);
-    update();
-  }
-});
-
 window.addEventListener("resize", () => resizeCanvas(canvas, ctx));
 window.addEventListener("load", () => resizeCanvas(canvas, ctx));
 

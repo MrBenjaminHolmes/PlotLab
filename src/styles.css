@@ -47,7 +47,7 @@ header {
 }
 
 #sidebar {
-  width: 300px;
+  width: 500px;
   min-width: 200px;
   max-width: 400px;
   background-color: #f0f0f0;
@@ -206,4 +206,97 @@ div.input-wrapper > input.inputExpression {
   width: 100% !important;
   padding: 4px !important;
   font-family: monospace !important;
+}
+div.input-wrapper:has(input.inputExpression:focus) {
+  outline: 2px solid #3399ff;
+  border-radius: 6px;
+  background-color: #e0eaff;
+}
+#sidebar.hidden {
+  transform: translateX(100%); /* Pushes sidebar out of view */
+  opacity: 0;
+  pointer-events: none; /* Optional: disables interaction when hidden */
+}
+#sidebar {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: translateX(0);
+  opacity: 1;
+}
+.thickness-slider {
+  width: 80px; /* smaller width */
+  height: 6px; /* slimmer height */
+  margin-left: 10px; /* spacing from input or color */
+  cursor: pointer;
+  -webkit-appearance: none; /* remove default style */
+  background: #ddd;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+  flex-shrink: 0;
+}
+
+/* Slider track */
+.thickness-slider::-webkit-slider-runnable-track {
+  height: 6px;
+  background: #bbb;
+  border-radius: 3px;
+}
+
+.thickness-slider::-moz-range-track {
+  height: 6px;
+  background: #bbb;
+  border-radius: 3px;
+}
+
+/* Slider thumb */
+.thickness-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  background: #666;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: -4px; /* center thumb on track */
+  transition: background-color 0.3s ease;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.thickness-slider::-webkit-slider-thumb:hover {
+  background: #444;
+}
+
+.thickness-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  background: #666;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease;
+}
+
+.thickness-slider::-moz-range-thumb:hover {
+  background: #444;
+}
+
+/* Arrange inputs horizontally in expressionInput */
+.expressionInput {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #dcdcdc;
+  padding: 0.5rem;
+  transition: background-color 0.2s ease;
+}
+
+/* Make input-wrapper flexible */
+.input-wrapper {
+  flex: 1 1 auto; /* grow to fill space */
+  min-width: 0;
+}
+
+/* Keep color picker small and circular */
+.colourSelect {
+  width: 28px;
+  height: 28px;
 }
